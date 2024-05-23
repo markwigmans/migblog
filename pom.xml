@@ -70,6 +70,8 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Needed for spring-ai -->
     <repositories>
         <repository>
             <id>spring-milestones</id>
