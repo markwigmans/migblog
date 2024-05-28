@@ -1,0 +1,26 @@
+name: mig-blog
+
+services:
+
+  oracle:
+    image: gvenzl/oracle-free:latest
+    volumes:
+      - ./data:/opt/oracle/oradata
+
+    # Provide passwords and other environment variables to container
+    environment:
+      ORACLE_RANDOM_PASSWORD: true
+      APP_USER: mig
+      APP_USER_PASSWORD: mig
+
+    # Forward Oracle port
+    ports:
+      - "1521:1521"
+
+    # Provide healthcheck script options for startup
+    healthcheck:
+      test: healthcheck.sh
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s

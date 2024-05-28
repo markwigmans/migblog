@@ -112,7 +112,7 @@ public class LeonardoService {
                 .body(message)
                 .retrieve()
                 .body(LeonardoAPI.SDGenerationResponse.class);
-        }
+    }
 
     @SneakyThrows
     public LeonardoAPI.GenerationsResponse getImage(String imageId) {
@@ -121,9 +121,9 @@ public class LeonardoService {
         do {
             Thread.sleep(1000);
             response = restClient.get()
-                .uri("/generations/" + imageId)
-                .retrieve()
-                .body(LeonardoAPI.GenerationsResponse.class);
+                    .uri("/generations/" + imageId)
+                    .retrieve()
+                    .body(LeonardoAPI.GenerationsResponse.class);
             // check if valid response
             if (response != null && response.generationsByPk() != null) {
                 ready = response.generationsByPk().status().equals("COMPLETE");

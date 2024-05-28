@@ -9,25 +9,31 @@ import java.util.List;
 public class PerplexityAPI {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record ChatCompletionRequest(@JsonProperty("messages") List<ChatCompletionMessage> messages, @JsonProperty("model") String model) { }
+    public record ChatCompletionRequest(@JsonProperty("messages") List<ChatCompletionMessage> messages,
+                                        @JsonProperty("model") String model) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record ChatCompletionMessage(@JsonProperty("content") Object content, @JsonProperty("role") String role) { }
+    public record ChatCompletionMessage(@JsonProperty("content") Object content, @JsonProperty("role") String role) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record ChatCompletion(@JsonProperty("id") String id, @JsonProperty("choices") List<Choice> choices,
-                              @JsonProperty("created") Long created, @JsonProperty("model") String model,
-                              @JsonProperty("object") String object, @JsonProperty("usage") Usage usage) {}
+                                 @JsonProperty("created") Long created, @JsonProperty("model") String model,
+                                 @JsonProperty("object") String object, @JsonProperty("usage") Usage usage) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record Choice(@JsonProperty("finish_reason") ChatCompletionFinishReason finishReason,
                          @JsonProperty("index") Integer index,
-                         @JsonProperty("message") ChatCompletionMessage message) { }
+                         @JsonProperty("message") ChatCompletionMessage message) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record Usage(@JsonProperty("completion_tokens") Integer completionTokens,
                         @JsonProperty("prompt_tokens") Integer promptTokens,
-                        @JsonProperty("total_tokens") Integer totalTokens) { }
+                        @JsonProperty("total_tokens") Integer totalTokens) {
+    }
 
 
     public enum ChatCompletionFinishReason {
