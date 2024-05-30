@@ -1,6 +1,6 @@
 package com.btb.migblog.api;
 
-import com.btb.migblog.services.RssFeedService;
+import com.btb.migblog.services.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rss")
-public class RssFeedController {
+@RequestMapping("/blog")
+public class BlogController {
 
-    private final RssFeedService rssFeedService;
+    private final BlogService blogService;
 
-    @GetMapping("/store")
+    @GetMapping("/generate")
     public void storeFeeds() {
-        rssFeedService.storeRssFeeds();
+        blogService.generate();
     }
 }

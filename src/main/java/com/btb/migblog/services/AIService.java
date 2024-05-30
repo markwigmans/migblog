@@ -1,19 +1,24 @@
 package com.btb.migblog.services;
 
+import com.btb.migblog.model.RssItem;
 import com.btb.migblog.services.leonardo.LeonardoAPI;
 import com.btb.migblog.services.leonardo.LeonardoImageOptions;
 import com.btb.migblog.services.leonardo.LeonardoService;
 import com.btb.migblog.services.perplexity.PerplexityAPI;
 import com.btb.migblog.services.perplexity.PerplexityService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
+import lombok.SneakyThrows;
+import org.springframework.ai.chat.ChatResponse;
+import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.stereotype.Service;
+import org.stringtemplate.v4.ST;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.btb.migblog.services.perplexity.PerplexityAPI.ChatModel;
 
@@ -23,12 +28,45 @@ public class AIService {
 
     private final PerplexityService perplexityService;
     private final LeonardoService leonardoService;
+    private final ObjectMapper objectMapper;
 
-    public PerplexityAPI.ChatCompletion question() {
-        Message systemMessage = new SystemMessage("Be precise and concise.");
-        Message userMessage = new UserMessage("ow many stars are there in our galaxy?");
-        Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
-        return perplexityService.chatCompletion(prompt, ChatModel.LLAMA_3_SONAR_SMALL_32K_ONLINE);
+    public ChatResponse topRssItems(List<RssItem> rssItems) {
+
+        final String promptText = """
+                You are an expert in the field of software architecture.
+                
+                Create a ranked list of the top 3 from the given options related to 'software architecture'. Order them from title I'd be most likely to click on to least likely.
+                                                
+                The input is a JSON structure with an array of options. You must only consider the field 'title'.
+                Format the output exclusively in JSON in the same structure as the input. Do not add any text before or after the generated JSON structure.
+                                
+                The options are: <options>
+                
+                Example output is:
+                {
+                  "options": [
+                    {"title": "Creating Software Architecture with Modern Diagramming Tools", "refId": 5},
+                    {"title": "How to make architecture decisions", "refId": 3},
+                    {"title": "Article: 9 Steps towards an Agile Architecture", "refId": 4}
+                  ]                
+                }
+                """;
+
+        ST template = new ST(promptText, '<' , '>');
+        template.add("options", inputOptionsToJson(rssItems));
+        final PerplexityAPI.ChatCompletion chatCompletion = perplexityService.chatCompletion(new Prompt(template.render()), ChatModel.LLAMA_3_SONAR_LARGE_32K_ONLINE);
+        return new ChatResponse(chatCompletion.choices().stream().map(r -> new Generation(r.message().content().toString())).toList());
+    }
+
+    record InputOptions(String title, long refId) {}
+
+    @SneakyThrows
+    private String inputOptionsToJson(List<RssItem> rssItems) {
+        List<InputOptions> result = new ArrayList<>();
+        if (rssItems != null) {
+            result = rssItems.stream().map(r -> new InputOptions(r.getTitle(), r.getId())).toList();
+        }
+        return objectMapper.writeValueAsString(result);
     }
 
     public PerplexityAPI.ChatCompletion jobReasons(int count, String domain, String location) {

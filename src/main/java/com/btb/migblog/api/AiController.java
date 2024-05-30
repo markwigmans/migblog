@@ -24,11 +24,6 @@ public class AiController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/question")
-    public ResponseEntity<PerplexityAPI.ChatCompletion> question() {
-        PerplexityAPI.ChatCompletion result = aiService.question();
-        return ResponseEntity.ok(result);
-    }
 
     @GetMapping("/image/models")
     public ResponseEntity<LeonardoAPI.Models> getModels() {

@@ -53,6 +53,10 @@ public class RssFeedService {
         });
     }
 
+    public List<RssItem> findNewRssFeeds() {
+        return rssItemRepository.findByStatus(Status.NEW);
+    }
+
     @SneakyThrows
     @Retryable
     List<RssItem> fetchRssFeed(Feed feed) {
@@ -85,5 +89,4 @@ public class RssFeedService {
             return null;
         }
     }
-
 }
