@@ -2,6 +2,7 @@ package com.btb.migblog.services;
 
 import com.btb.migblog.model.Feed;
 import com.btb.migblog.model.RssItem;
+import com.btb.migblog.model.Status;
 import com.btb.migblog.repository.FeedRepository;
 import com.btb.migblog.repository.RssItemRepository;
 import com.rometools.rome.feed.synd.SyndContent;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -52,6 +54,7 @@ public class RssFeedService {
     }
 
     @SneakyThrows
+    @Retryable
     List<RssItem> fetchRssFeed(Feed feed) {
         List<RssItem> feedItems = new ArrayList<>();
 
@@ -66,7 +69,7 @@ public class RssFeedService {
                 RssItem item = new RssItem(entry.getTitle(),
                         entry.getLink(),
                         entry.getPublishedDate(),
-                        clean(entry.getDescription()), feed);
+                        clean(entry.getDescription()), feed, Status.NEW);
                 feedItems.add(item);
             }
         }

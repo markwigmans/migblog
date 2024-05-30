@@ -2,9 +2,7 @@ package com.btb.migblog.model;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,4 +27,6 @@ public class RssItem extends AbstractEntity {
     private String description;
     @ManyToOne
     private Feed feed;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }
