@@ -13,27 +13,38 @@ import java.util.List;
 public class LeonardoAPI {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record Models(@JsonProperty("custom_models") List<Model> models) { }
+    public record Models(@JsonProperty("custom_models") List<Model> models) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record Model(@JsonProperty("id") String id, @JsonProperty("name") String name, @JsonProperty("description") String description,
-                        @JsonProperty("nsfw") Boolean nsfw, @JsonProperty("featured") Boolean featured, @JsonProperty("generated_image") GeneratedImage generatedImage) { }
+    public record Model(@JsonProperty("id") String id, @JsonProperty("name") String name,
+                        @JsonProperty("description") String description,
+                        @JsonProperty("nsfw") Boolean nsfw, @JsonProperty("featured") Boolean featured,
+                        @JsonProperty("generated_image") GeneratedImage generatedImage) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record PromptGenerationResponse(@JsonProperty("promptGeneration") PromptGeneration prompt) {}
+    public record PromptGenerationResponse(@JsonProperty("promptGeneration") PromptGeneration prompt) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record PromptGeneration(@JsonProperty("prompt") String prompt, @JsonProperty("apiCreditCost") Integer apiCreditCost) {}
+    public record PromptGeneration(@JsonProperty("prompt") String prompt,
+                                   @JsonProperty("apiCreditCost") Integer apiCreditCost) {
+    }
 
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record SDGenerationResponse(@JsonProperty("sdGenerationJob") SDGeneration generation) {}
+    public record SDGenerationResponse(@JsonProperty("sdGenerationJob") SDGeneration generation) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record SDGeneration(@JsonProperty("generationId") String generationId, @JsonProperty("apiCreditCost") Integer apiCreditCost) {}
+    public record SDGeneration(@JsonProperty("generationId") String generationId,
+                               @JsonProperty("apiCreditCost") Integer apiCreditCost) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record GenerationsResponse( @JsonProperty("generations_by_pk") GenerationsByPk generationsByPk) {}
+    public record GenerationsResponse(@JsonProperty("generations_by_pk") GenerationsByPk generationsByPk) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -59,7 +70,8 @@ public class LeonardoAPI {
             @JsonProperty("scheduler") String scheduler,
             @JsonProperty("sdVersion") String sdVersion,
             @JsonProperty("seed") Integer seed,
-            @JsonProperty("status") String status) {}
+            @JsonProperty("status") String status) {
+    }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -68,6 +80,7 @@ public class LeonardoAPI {
             @JsonProperty("nsfw") Boolean nsfw,
             @JsonProperty("id") String id,
             @JsonProperty("likeCount") Integer likeCount,
-            @JsonProperty("motionMP4URL") String motionMP4URL) {}
+            @JsonProperty("motionMP4URL") String motionMP4URL) {
+    }
 }
 

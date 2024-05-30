@@ -17,8 +17,8 @@ public class AiController {
 
     @GetMapping("/job-reasons")
     public ResponseEntity<PerplexityAPI.ChatCompletion> jobReasons(@RequestParam(value = "count", required = false, defaultValue = "3") int count,
-                                             @RequestParam("job") String job,
-                                             @RequestParam("location") String location) {
+                                                                   @RequestParam("job") String job,
+                                                                   @RequestParam("location") String location) {
         PerplexityAPI.ChatCompletion result = aiService.jobReasons(count, job, location);
 
         return ResponseEntity.ok(result);
